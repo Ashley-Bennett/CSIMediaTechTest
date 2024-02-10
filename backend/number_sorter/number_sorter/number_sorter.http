@@ -1,0 +1,6 @@
+@number_sorter_HostAddress = http://localhost:5007
+
+GET {{number_sorter_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
