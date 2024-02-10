@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\number_sorter.props" />
+</Project>
