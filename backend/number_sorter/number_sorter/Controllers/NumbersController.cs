@@ -42,14 +42,28 @@ namespace number_sorter.Controllers
 
         [HttpPost]
         [Route("AddNumbers")]
-        public JsonResult AddNumbers([FromForm] string addedNumbers, bool ascending)
+        public JsonResult AddNumbers([FromForm] string addedNumbers, bool ascending = true)
         {
+            if (addedNumbers == null)
+            {
+                throw new ArgumentNullException();
+            }
             //stopwatch for operations
             Stopwatch sw;
             sw = Stopwatch.StartNew();
             string[] separatedNumbers = addedNumbers.Split(' ');
+
+            int[] separatedNumbersInts;
+
             //convert string array to int array
-            int[] separatedNumbersInts = Array.ConvertAll(separatedNumbers, int.Parse);
+            try
+            {
+                separatedNumbersInts = Array.ConvertAll(separatedNumbers, int.Parse);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
 
             int[] sorted = new int[separatedNumbersInts.Length];
             for (int i = 0; i < separatedNumbersInts.Length; i++)
@@ -91,7 +105,12 @@ namespace number_sorter.Controllers
 
             };
 
-            return new JsonResult("Added Successfully");
+            return new JsonResult(new
+            {
+                SuccessResult = "Added Successfully",
+                SortResult = sortedNumbers,
+                SortTime = sw.ElapsedMilliseconds
+            });
         }
     }
 }
