@@ -20,7 +20,7 @@ namespace number_sorter.Controllers
         [Route("GetNumbers")]
         public JsonResult GetNumbers()
         {
-            string query = "select * from numbers";
+            string query = "select * from numbers order by id";
             DataTable dt = new DataTable();
             string sqlDatasource = _configuration.GetConnectionString("numberSorterDBCon");
             SqlDataReader myReader;
@@ -108,6 +108,7 @@ namespace number_sorter.Controllers
             return new JsonResult(new
             {
                 SuccessResult = "Added Successfully",
+                SortDirection = ascending ? "ascending" : "descending",
                 SortResult = sortedNumbers,
                 SortTime = sw.ElapsedMilliseconds
             });
