@@ -24,6 +24,7 @@ const Numbers = () => {
       setNumberValidationMessage(
         "Input not valid, check your numbers and try again"
       );
+      setInputValidation("invalid");
       setSubmitButtonDisabled(false);
       return;
     }
