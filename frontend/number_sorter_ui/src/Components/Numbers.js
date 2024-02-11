@@ -8,7 +8,7 @@ const Numbers = () => {
     fetch(API_URL + "/api/Numbers/GetNumbers")
       .then((res) => res.json())
       .then((data) => {
-        setnumbersSorted(data);
+        setAllNumbersSorted(data);
       })
       .catch((e) => {
         console.log(e);
@@ -57,6 +57,9 @@ const Numbers = () => {
         setValidationMessage(data.SuccessResult);
         setInputValidation("valid");
         setSubmitButtonDisabled(false);
+        setOrderOfNumbers(data.SortDirection);
+        setNumbersOrdered(data.SortResult);
+        setSortTime(data.SortTime);
       });
   };
 
@@ -81,11 +84,14 @@ const Numbers = () => {
     }
   };
 
-  const [numbersSorted, setnumbersSorted] = useState([]);
+  const [allNumbersSorted, setAllNumbersSorted] = useState([]);
   const [validationMessage, setValidationMessage] = useState("");
   const [numberValidationMessage, setNumberValidationMessage] = useState("");
   const [inputValidation, setInputValidation] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+  const [orderOfNumbers, setOrderOfNumbers] = useState("");
+  const [numbersOrdered, setNumbersOrdered] = useState("");
+  const [sortTime, setSortTime] = useState("");
   return (
     <div>
       <form method="post" onSubmit={handleSubmitNumbers}>
@@ -121,21 +127,27 @@ const Numbers = () => {
           Sort
         </button>
       </form>
-      <div className="result">
-        <p>{validationMessage}</p>
-        <p>These are your numbers sorted {}:</p>
-      </div>
+      {numbersOrdered.length > 0 && (
+        <div className="result">
+          <p>{validationMessage}</p>
+          <p>
+            Here are your numbers. They were sorted in {orderOfNumbers} order
+            and this took {sortTime}ms.
+          </p>
+          <b>{numbersOrdered}</b>
+        </div>
+      )}
       <div className="tableContainer">
         <button onClick={getAllNumbers} className="buttonMain">
-          Get numbers
+          Get all numbers
         </button>
-        {numbersSorted.length > 0 ? (
+        {allNumbersSorted.length > 0 ? (
           <table>
             <tr>
               <th>Numbers</th>
               <th>Order</th>
             </tr>
-            {numbersSorted.map((numberSequence) => {
+            {allNumbersSorted.map((numberSequence) => {
               return (
                 <tr>
                   <td>{numberSequence.numbers}</td>
